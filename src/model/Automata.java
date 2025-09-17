@@ -1,5 +1,8 @@
 package src.model;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class Automata {
@@ -8,6 +11,7 @@ public abstract class Automata {
     private Set<String> alphabet;
     private String initialState;
     private Set<String> finalStates;
+    private Map<String, Map<String, Set<String>>> transitions;
 
     //Constructor
     public Automata(Set<String> states, Set<String> alphabet, String initialState, Set<String> finalStates){
@@ -15,6 +19,7 @@ public abstract class Automata {
         this.alphabet = alphabet;
         this.initialState = initialState;
         this. finalStates = finalStates;
+        this.transitions = new HashMap<>();
     }
 
     //Getters
@@ -22,7 +27,19 @@ public abstract class Automata {
     public Set<String> getAlphabet(){ return alphabet; }
     public String getInitialState(){ return initialState; }
     public Set<String> getFinalStates(){ return finalStates; }
+    public Map<String, Map<String, Set<String>>> getTransitions() { return transitions; }
 
+
+    public void addTransition(String from, String symbol, String to) {
+        transitions.computeIfAbsent(from, k -> new HashMap<>())
+                  .computeIfAbsent(symbol, k -> new HashSet<>())
+                  .add(to);
+    }
+
+    public Set<String> getTransition(String state, String symbol){
+        return transitions.getOrDefault(state, new HashMap<>())
+        .getOrDefault(symbol, new HashSet<>());
+    }
     /**
      * Método para verificar si el estado es de aceptación
      * @param state
@@ -32,12 +49,6 @@ public abstract class Automata {
         return finalStates.contains(state);
     }
 
-    /**
-     * Método abstracto para agregar las transiciones
-     * @param from
-     * @param symbol
-     * @param until
-     */
-    public abstract void addTransitions(String from, String symbol, String until);
+    public abstract boolean validateString(String input);
 
 }
