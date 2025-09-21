@@ -1,4 +1,4 @@
-package src.service;
+package com.unpsjb.automatas.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,8 +11,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-import src.model.AFD;
-import src.model.AFND;
+import com.unpsjb.automatas.model.AFD;
+import com.unpsjb.automatas.model.AFND;
 /*
  * clase para convertir un AFND a AFD
  */

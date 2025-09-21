@@ -1,4 +1,4 @@
-package src.model;
+package com.unpsjb.automatas.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
