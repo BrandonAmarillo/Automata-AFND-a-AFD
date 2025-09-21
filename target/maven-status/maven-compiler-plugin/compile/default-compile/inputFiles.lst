@@ -1,9 +1,0 @@
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/model/AFND.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/io/AutomataWriter.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/model/Automata.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/application/Main.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/service/Validator.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/service/Converter.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/model/AFD.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/service/Minimizer.java
-/home/brandon/Automata-AFND-a-AFD/src/main/java/com/unpsjb/automatas/io/AutomataReader.java
