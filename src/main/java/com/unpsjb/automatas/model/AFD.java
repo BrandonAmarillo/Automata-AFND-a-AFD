@@ -11,8 +11,21 @@ public class AFD extends Automata {
 
      @Override
      public boolean validateString(String input) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateString'");
+        String currentState = getInitialState();
+
+        for(char c: input.toCharArray()){
+            String symbol = String.valueOf(c);
+
+            Set<String> nextStates = getTransition(currentState, symbol);
+
+            if(nextStates.isEmpty()){
+                return false;
+            }
+
+            currentState = nextStates.iterator().next();
+        }
+
+        return isFinal(currentState);
      }
   
 }

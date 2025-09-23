@@ -49,6 +49,14 @@ public abstract class Automata {
         return finalStates.contains(state);
     }
 
+    public boolean containsFinalState(Set<String> states) {
+    if (states == null || states.isEmpty()) return false;
+    for (String s : states) {
+        if (finalStates.contains(s)) return true;
+    }
+    return false;
+}
+
     public abstract boolean validateString(String input);
 
 }

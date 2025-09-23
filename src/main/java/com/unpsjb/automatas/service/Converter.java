@@ -17,8 +17,6 @@ import com.unpsjb.automatas.model.AFND;
  * clase para convertir un AFND a AFD
  */
 public class Converter {
-
-    private int stateCounter = 0;
     
     // método principal para convertir un AFND a AFD
     public AFD convert(AFND afnd) {
@@ -29,8 +27,7 @@ public class Converter {
         // Inicializar estructuras para el AFD
         Set<String> afdStates = new HashSet<>();
         Set<String> afdFinalStates = new HashSet<>();
-        Map<String, Map<String, Set<String>>> afdTransitions = new HashMap<>();
-        Set<String> alphabet = afnd.getAlphabet();
+        Map<String, Map<String, String>> afdTransitions = new HashMap<>();
         // Lógica para convertir AFND a AFD
 
         // Usar una cola para procesar estados del AFD
@@ -78,19 +75,32 @@ public class Converter {
                 } else {
                     newStateName = stateMapping.get(newStateSet);
                 }
+
+                //Guardar la transición
+                afdTransitions.computeIfAbsent(currentName, k -> new HashMap<>()).put(symbol, newStateName);
             }
         }
 
         // Crear y retornar el AFD
         AFD afd = new AFD(afdStates, afnd.getAlphabet(), initialStateAFD, afdFinalStates);
-
+        for(Map.Entry<String, Map<String, String>> entry : afdTransitions.entrySet()){
+            String from = entry.getKey();
+            for(Map.Entry<String, String> t: entry.getValue().entrySet()){
+                String symbol = t.getKey();
+                String to = t.getValue();
+                afd.addTransition(from, symbol, to);
+            }
+        }
         // Agregar todas las transiciones al AFD
         return afd;
     }
 
     private Set<String> move(AFND afnd, Set<String> currentStateSet, String symbol) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'move'");
+        Set<String> result = new HashSet<>();
+        for (String state : currentStateSet) {
+            result.addAll(afnd.getTransition(state, symbol));
+        }
+        return result;
     }
 
     // método para verificar si un conjunto de estados contiene un estado de aceptación
@@ -127,7 +137,7 @@ public class Converter {
         return closure;
     }
 
-    // Método sobrecargado para calcular ε-clausura de un solo estado
+    // Método sobrecargado para calcular λ-clausura de un solo estado
     private Set<String> lambdaClosure(AFND afnd, String state) {
         return lambdaClosure(afnd, Collections.singleton(state));
     }

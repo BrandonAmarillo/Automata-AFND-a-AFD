@@ -1,5 +1,6 @@
 package com.unpsjb.automatas.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class AFND extends Automata {
@@ -10,8 +11,25 @@ public class AFND extends Automata {
 
     @Override
     public boolean validateString(String input) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateString'");
+        Set<String> currentStates = new HashSet<>();
+
+        currentStates.add(getInitialState());
+
+        for (char c : input.toCharArray()) {
+            String symbol = String.valueOf(c);
+            Set<String> nextStates = new HashSet<>();
+
+            for (String state : currentStates) {
+                nextStates.addAll(getTransition(state, symbol));
+            }
+
+            currentStates = nextStates;
+            if (currentStates.isEmpty()) {
+                return false; // ningún estado alcanzable
+            }
+        }
+
+        return containsFinalState(currentStates);
     }
 
 }
