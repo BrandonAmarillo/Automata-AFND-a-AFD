@@ -1,6 +1,7 @@
 package com.unpsjb.automatas.application;
 
 import com.unpsjb.automatas.io.AutomataReader;
+import com.unpsjb.automatas.io.AutomataWriter;
 import com.unpsjb.automatas.model.AFD;
 import com.unpsjb.automatas.model.AFND;
 import com.unpsjb.automatas.model.Automata;
@@ -13,17 +14,18 @@ public class Main {
 
        try {
             // Leer AFND desde JSON
-            Automata afnd = AutomataReader.readFromJson("afnd3.json");
+            Automata automata = AutomataReader.readFromJson("afnd3.json");
             System.out.println("Automata cargado:");
-            System.out.println("Estados: " + afnd.getState());
-            System.out.println("Alfabeto: " + afnd.getAlphabet());
-            System.out.println("Estado inicial: " + afnd.getInitialState());
-            System.out.println("Estados finales: " + afnd.getFinalStates());
-            System.out.println("Transiciones: " + afnd.getTransitions());
+            System.out.println("Estados: " + automata.getState());
+            System.out.println("Alfabeto: " + automata.getAlphabet());
+            System.out.println("Estado inicial: " + automata.getInitialState());
+            System.out.println("Estados finales: " + automata.getFinalStates());
+            System.out.println("Transiciones: " + automata.getTransitions());
 
             // Convertir AFND → AFD
+            AFND afnd = (AFND) automata;
             Converter converter = new Converter();
-            AFD afd = converter.convert((AFND) afnd);
+            AFD afd = converter.convert(afnd);
 
             // Mostrar AFD resultante
             System.out.println("\n=== AFD resultante ===");
@@ -41,6 +43,8 @@ public class Main {
             System.out.println("Inicial: " + minimized.getInitialState());
             System.out.println("Finales: " + minimized.getFinalStates());
             System.out.println("Transiciones: " + minimized.getTransitions());
+
+            AutomataWriter.generatePDF("informe.pdf", afnd, afd, minimized);
         } catch (Exception e) {
             e.printStackTrace();
         }

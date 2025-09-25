@@ -61,7 +61,15 @@ public class Minimizer {
         return minimizedAFD(initialState, alphabet, finalStates, partitions, afd);
     }
 
-    // Construcción del nuevo AFD
+    /**
+     * Construcción del nuevo AFD
+     * @param initialState
+     * @param alphabet
+     * @param finalStates
+     * @param partitions
+     * @param afd
+     * @return
+     */
     private AFD minimizedAFD(String initialState, Set<String> alphabet, Set<String> finalStates, Set<Set<String>> partitions, AFD afd) {
         Set<String> newStates = new HashSet<>();
         Map<String, String> representative = new HashMap<>();
@@ -112,7 +120,7 @@ public class Minimizer {
     mappingAFD.put(afdMinimized.getInitialState(), "Q0");
     count++;
 
-    // Después renombrar los demás
+    // Después renombrar los demás conjuntos de estados
     for(String state: afdMinimized.getState()){
         if(!mappingAFD.containsKey(state)){
             mappingAFD.put(state, "Q" + count++);
