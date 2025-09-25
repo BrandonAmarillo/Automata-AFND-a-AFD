@@ -28,7 +28,6 @@ public class Converter {
         Set<String> afdStates = new HashSet<>();
         Set<String> afdFinalStates = new HashSet<>();
         Map<String, Map<String, String>> afdTransitions = new HashMap<>();
-        // Lógica para convertir AFND a AFD
 
         // Usar una cola para procesar estados del AFD
         Queue<Set<String>> queue = new LinkedList<>();
@@ -52,13 +51,13 @@ public class Converter {
 
             // Para cada símbolo en el alfabeto
             for(String symbol: afnd.getAlphabet()){
-                if(symbol.equals("λ")) continue; // Saltar lambda
+                if(symbol.equals("λ")) continue;
 
                 // Calcular movimiento y cierre lambda
                 Set<String> moveResult = move(afnd, currentStateSet, symbol);
                 Set<String> newStateSet = lambdaClosure(afnd, moveResult);
 
-                if (newStateSet.isEmpty()) continue; // No hay transición
+                if (newStateSet.isEmpty()) continue;
 
                 String newStateName;
                 if(!stateMapping.containsKey(newStateSet)){
@@ -83,6 +82,7 @@ public class Converter {
 
         // Crear y retornar el AFD
         AFD afd = new AFD(afdStates, afnd.getAlphabet(), initialStateAFD, afdFinalStates);
+        // Agregar todas las transiciones al AFD
         for(Map.Entry<String, Map<String, String>> entry : afdTransitions.entrySet()){
             String from = entry.getKey();
             for(Map.Entry<String, String> t: entry.getValue().entrySet()){
@@ -91,7 +91,10 @@ public class Converter {
                 afd.addTransition(from, symbol, to);
             }
         }
-        // Agregar todas las transiciones al AFD
+
+        // Quitamos los sumideros
+        removeSinkStates(afd);
+
         return afd;
     }
 
@@ -141,5 +144,38 @@ public class Converter {
     private Set<String> lambdaClosure(AFND afnd, String state) {
         return lambdaClosure(afnd, Collections.singleton(state));
     }
+
+    private void removeSinkStates(AFD afd) {
+    Set<String> toRemove = new HashSet<>();
+
+    for (String state : afd.getState()) {
+        if (!afd.isFinal(state)) {
+            boolean isSink = true;
+            for (String symbol : afd.getAlphabet()) {
+                Set<String> targets = afd.getTransition(state, symbol);
+                if (targets.size() != 1 || !targets.contains(state)) {
+                    isSink = false;
+                    break;
+                }
+            }
+            if (isSink) {
+                toRemove.add(state);
+            }
+        }
+    }
+
+    // Quitar del autómata
+    afd.getState().removeAll(toRemove);
+    afd.getFinalStates().removeAll(toRemove);
+    afd.getTransitions().keySet().removeAll(toRemove);
+
+    // También limpiar referencias a esos estados en transiciones
+    for (Map<String, Set<String>> trans : afd.getTransitions().values()) {
+        for (Set<String> targets : trans.values()) {
+            targets.removeAll(toRemove);
+        }
+    }
+}
+
 
 }

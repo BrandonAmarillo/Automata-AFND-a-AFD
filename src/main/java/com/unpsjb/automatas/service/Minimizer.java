@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.unpsjb.automatas.model.AFD;
 
@@ -99,8 +100,50 @@ public class Minimizer {
                 }
             }
         }
-        return miniAFD;
+        //return miniAFD;
+        return renameState(afd);
     }
+
+    private AFD renameState(AFD afdMinimized) {
+    Map<String, String> mappingAFD = new HashMap<>();
+    int count = 0;
+
+    // Primero asignar Q0 al estado inicial
+    mappingAFD.put(afdMinimized.getInitialState(), "Q0");
+    count++;
+
+    // Después renombrar los demás
+    for(String state: afdMinimized.getState()){
+        if(!mappingAFD.containsKey(state)){
+            mappingAFD.put(state, "Q" + count++);
+        }
+    }
+
+    // Nuevo conjunto de estados y finales
+    Set<String> newState = new HashSet<>(mappingAFD.values());
+    Set<String> newFinalStates = afdMinimized.getFinalStates()
+                                             .stream()
+                                             .map(mappingAFD::get)
+                                             .collect(Collectors.toSet());
+
+    String newInitial = mappingAFD.get(afdMinimized.getInitialState());
+
+    AFD renameStateAFD = new AFD(newState, afdMinimized.getAlphabet(), newInitial, newFinalStates);
+
+    // Reemplazar transiciones
+    for(Map.Entry<String, Map<String, Set<String>>> entry: afdMinimized.getTransitions().entrySet()){
+        String from = mappingAFD.get(entry.getKey());
+        for(Map.Entry<String, Set<String>> transiton: entry.getValue().entrySet()){
+            String symbol = transiton.getKey();
+            for(String to: transiton.getValue()){
+                renameStateAFD.addTransition(from, symbol, mappingAFD.get(to));
+            }
+        }
+    }
+
+    return renameStateAFD;
+}
+
 
     // Busca el representante del conjunto de destino en las particiones
     private String findRepresentative(Set<String> destiny, Set<Set<String>> partitions) {

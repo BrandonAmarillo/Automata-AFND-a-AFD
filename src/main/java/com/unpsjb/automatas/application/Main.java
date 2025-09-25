@@ -13,7 +13,7 @@ public class Main {
 
        try {
             // Leer AFND desde JSON
-            Automata afnd = AutomataReader.readFromJson("afnd2.json");
+            Automata afnd = AutomataReader.readFromJson("afnd3.json");
             System.out.println("Automata cargado:");
             System.out.println("Estados: " + afnd.getState());
             System.out.println("Alfabeto: " + afnd.getAlphabet());
