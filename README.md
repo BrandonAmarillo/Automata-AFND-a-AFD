@@ -44,3 +44,5 @@ El proyecto utiliza las siguientes librerías:
 - [Gson v 2.11.9](https://github.com/google/gson) para manejo de JSON.
 - [iText 7 v 7.2.5](https://itextpdf.com/) para generar PDFs.
 Estas dependencias se gestionan automáticamente con **Maven**.
+</br>
+Nota: Si usan VScode deben tener instalado ```Extension Pack for Java```.
