@@ -162,7 +162,7 @@ public class InterfaceUI {
         String path = fileName.concat(".pdf");
 
         try {
-            AutomataWriter.generatePDF(path, afnd, afd, minimizedAFD);
+            AutomataWriter.generatePDF(path, afnd, afd, minimizedAFD, testResults);
         } catch (Exception e) {
             System.out.println("Error al generar PDF: " + e.getMessage());
         }

@@ -3,6 +3,7 @@ package com.unpsjb.automatas.io;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,13 +14,15 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.unpsjb.automatas.model.AFD;
 import com.unpsjb.automatas.model.AFND;
+import com.unpsjb.automatas.model.StringTestResult;
 
 public class AutomataWriter {
     
     public static void generatePDF(String fileName,
                                    AFND afnd,
                                    AFD afd,
-                                   AFD minimizedAFD) throws Exception {
+                                   AFD minimizedAFD,
+                                   List<StringTestResult> testResults) throws Exception {
 
         // Crear archivo PDF
         PdfWriter writer = new PdfWriter(fileName);
@@ -74,6 +77,25 @@ public class AutomataWriter {
         addTransitionTable(document, minimizedAFD.getState(), minimizedAFD.getAlphabet(),
                            minimizedAFD.getInitialState(), minimizedAFD.getFinalStates(),
                            minimizedAFD.getTransitions(), "Tabla de Transiciones AFD Minimizado");
+
+        // ======= Tabla de resultados de cadenas =======
+        if (testResults != null && !testResults.isEmpty()) {
+            document.add(new Paragraph("\nResultados de validación de cadenas").setBold().setFontSize(14));
+            float[] columnWidths = {200, 100, 100, 100};
+            Table table = new Table(columnWidths);
+            table.addHeaderCell("Cadena");
+            table.addHeaderCell("AFND");
+            table.addHeaderCell("AFD");
+            table.addHeaderCell("AFDmin");
+
+            for (StringTestResult result : testResults) {
+                table.addCell(result.getString());
+                table.addCell(result.isAcceptedByAFND() ? "Aceptado" : "Rechazado");
+                table.addCell(result.isAcceptedByAFD() ? "Aceptado" : "Rechazado");
+                table.addCell(result.isAcceptedByMinimized() ? "Aceptado" : "Rechazado");
+            }
+            document.add(table);
+        }
 
         document.close();
     }
