@@ -94,20 +94,33 @@ public class InterfaceUI {
         
             System.out.println("Se detecto un AFND. Convirtiendo a AFD...");
             afnd = (AFND) automata;
+            showAutomata(afnd);
             afd = converter.convert(afnd);
             System.out.println("Conversión completado");
+            showAutomata(afd);
             System.out.println("Minimizando AFD...");
             minimizedAFD = minimizer.minimizer(afd);
             System.out.println("Minimización completado");
+            showAutomata(minimizedAFD);
 
         } else if(AutomataTypeChecker.isAFD(automata)){
         
             afd = (AFD) automata;
             System.out.println("Se detecto un AFD. Minimizando...");
+            showAutomata(afd);
             minimizedAFD = minimizer.minimizer(afd);
             System.out.println("Minimización completado");
-        
+            showAutomata(minimizedAFD);
         }
+    }
+
+    private void showAutomata(Automata automata) {
+        System.out.println("Automata cargado:");
+            System.out.println("Estados: " + automata.getState());
+            System.out.println("Alfabeto: " + automata.getAlphabet());
+            System.out.println("Estado inicial: " + automata.getInitialState());
+            System.out.println("Estados finales: " + automata.getFinalStates());
+            System.out.println("Transiciones: " + automata.getTransitions());
     }
 
     private void enterString() {
