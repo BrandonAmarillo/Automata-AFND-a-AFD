@@ -12,12 +12,12 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.unpsjb.automatas.model.AFD;
-import com.unpsjb.automatas.model.Automata;
+import com.unpsjb.automatas.model.AFND;
 
 public class AutomataWriter {
     
     public static void generatePDF(String fileName,
-                                   Automata afnd,
+                                   AFND afnd,
                                    AFD afd,
                                    AFD minimizedAFD) throws Exception {
 
@@ -33,21 +33,22 @@ public class AutomataWriter {
         // ======= Identificador =======
         document.add(new Paragraph("Los que tienen " + " -> " + " Son Estado Inicial y los que tienen " + " * " + "Son Estados Finales"));
         
-        // ======= AFND =======
-        document.add(new Paragraph("\nAutómata Finito No Determinista (AFND)")
-                .setBold().setFontSize(16));
-
-        // Datos básicos AFND
-        document.add(new Paragraph("Estados: " + afnd.getState()));
-        document.add(new Paragraph("Alfabeto: " + afnd.getAlphabet()));
-        document.add(new Paragraph("Estado Inicial: " + afnd.getInitialState()));
-        document.add(new Paragraph("Estados Finales: " + afnd.getFinalStates()));
-
-        // Tabla AFND
-        addTransitionTable(document, afnd.getState(), afnd.getAlphabet(), 
-                           afnd.getInitialState(), afnd.getFinalStates(), 
-                           afnd.getTransitions(), "Tabla de Transiciones AFND");
-
+        if(afnd != null){
+            // ======= AFND =======
+            document.add(new Paragraph("\nAutómata Finito No Determinista (AFND)")
+                    .setBold().setFontSize(16));
+            
+            // Datos básicos AFND
+            document.add(new Paragraph("Estados: " + afnd.getState()));
+            document.add(new Paragraph("Alfabeto: " + afnd.getAlphabet()));
+            document.add(new Paragraph("Estado Inicial: " + afnd.getInitialState()));
+            document.add(new Paragraph("Estados Finales: " + afnd.getFinalStates()));
+            
+            // Tabla AFND
+            addTransitionTable(document, afnd.getState(), afnd.getAlphabet(), 
+                               afnd.getInitialState(), afnd.getFinalStates(), 
+                               afnd.getTransitions(), "Tabla de Transiciones AFND");
+        }
         // ======= AFD =======
         document.add(new Paragraph("\nAutómata Finito Determinista (AFD)")
                 .setBold().setFontSize(16));

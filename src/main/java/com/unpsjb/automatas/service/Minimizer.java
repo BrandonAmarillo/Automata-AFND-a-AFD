@@ -70,7 +70,7 @@ public class Minimizer {
      * @param afd
      * @return
      */
-    private AFD minimizedAFD(String initialState, Set<String> alphabet, Set<String> finalStates, Set<Set<String>> partitions, AFD afd) {
+    private  AFD minimizedAFD(String initialState, Set<String> alphabet, Set<String> finalStates, Set<Set<String>> partitions, AFD afd) {
         Set<String> newStates = new HashSet<>();
         Map<String, String> representative = new HashMap<>();
         Set<String> newFinalStates = new HashSet<>();
