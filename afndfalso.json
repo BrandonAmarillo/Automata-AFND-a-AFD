@@ -1,0 +1,21 @@
+{
+  "type": "AFD",
+  "states": ["q0", "q1", "q2"],
+  "alphabet": ["a", "b"],
+  "initialState": "",
+  "finalStates": ["q2"],
+  "transitions": {
+    "q0": {
+      "a": ["q1"],
+      "b": ["q0"]
+    },
+    "q1": {
+      "a": ["q2"],
+      "b": ["q0"]
+    },
+    "q2": {
+      "a": ["q2"],
+      "b": ["q2"]
+    }
+  }
+}
