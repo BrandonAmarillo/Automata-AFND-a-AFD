@@ -109,7 +109,7 @@ public class Minimizer {
             }
         }
         //return miniAFD;
-        return renameState(afd);
+        return miniAFD;
     }
 
     private AFD renameState(AFD afdMinimized) {

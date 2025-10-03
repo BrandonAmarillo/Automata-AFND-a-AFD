@@ -97,7 +97,7 @@ public class Converter {
 
             return afd;
         }
-
+        // método para calcular el movimiento de un conjunto de estados dado un símbolo
         private Set<String> move(AFND afnd, Set<String> currentStateSet, String symbol) {
             Set<String> result = new HashSet<>();
             for (String state : currentStateSet) {
@@ -141,6 +141,7 @@ public class Converter {
         }
 
         // Método sobrecargado para calcular λ-clausura de un solo estado
+        // Lo que hace es llamar al otro método con un conjunto que contiene solo ese estado
         private Set<String> lambdaClosure(AFND afnd, String state) {
             return lambdaClosure(afnd, Collections.singleton(state));
         }
