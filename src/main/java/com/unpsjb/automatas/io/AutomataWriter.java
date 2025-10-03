@@ -22,6 +22,7 @@ public class AutomataWriter {
                                    AFND afnd,
                                    AFD afd,
                                    AFD minimizedAFD,
+                                   AFD renameAFD,
                                    List<StringTestResult> testResults) throws Exception {
 
         // Crear archivo PDF
@@ -77,6 +78,19 @@ public class AutomataWriter {
         addTransitionTable(document, minimizedAFD.getState(), minimizedAFD.getAlphabet(),
                            minimizedAFD.getInitialState(), minimizedAFD.getFinalStates(),
                            minimizedAFD.getTransitions(), "Tabla de Transiciones AFD Minimizado");
+
+        // ======= AFD Renombrado =======
+        document.add(new Paragraph("\nAutómata Finito Determinista Minimizado Renombrado (AFD Mínimo Renombrado)")
+                .setBold().setFontSize(16));
+
+        document.add(new Paragraph("Estados: " + renameAFD.getState()));
+        document.add(new Paragraph("Alfabeto: " + renameAFD.getAlphabet()));
+        document.add(new Paragraph("Estado Inicial: " + renameAFD.getInitialState()));
+        document.add(new Paragraph("Estados Finales: " + renameAFD.getFinalStates()));
+
+        addTransitionTable(document, renameAFD.getState(), renameAFD.getAlphabet(),
+                           renameAFD.getInitialState(), renameAFD.getFinalStates(),
+                           renameAFD.getTransitions(), "Tabla de Transiciones AFD Minimizado renombrado");
 
         // ======= Tabla de resultados de cadenas =======
         if (testResults != null && !testResults.isEmpty()) {

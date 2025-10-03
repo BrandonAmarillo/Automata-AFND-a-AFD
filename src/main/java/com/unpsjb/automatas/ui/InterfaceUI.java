@@ -1,9 +1,11 @@
 package com.unpsjb.automatas.ui;
 
 import java.util.Scanner;
+import java.util.Set;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.unpsjb.automatas.exceptions.AutomataTypeChecker;
 import com.unpsjb.automatas.exceptions.AutomataValidator;
@@ -25,6 +27,7 @@ public class InterfaceUI {
     private AFD afd = null;
     private AFD minimizedAFD = null;
     private AFND afnd = null;
+    private AFD renameAFD = null;
     private Minimizer minimizer = new Minimizer();
     private Converter converter = new Converter();
 
@@ -94,14 +97,22 @@ public class InterfaceUI {
         
             System.out.println("Se detecto un AFND. Convirtiendo a AFD...");
             afnd = (AFND) automata;
+            System.out.println("AFND:");
             showAutomata(afnd);
             afd = converter.convert(afnd);
             System.out.println("Conversión completado");
+            System.out.println("AFD:");
             showAutomata(afd);
             System.out.println("Minimizando AFD...");
             minimizedAFD = minimizer.minimizer(afd);
             System.out.println("Minimización completado");
+            System.out.println("AFD minimizado:");
             showAutomata(minimizedAFD);
+            System.out.println("Renombrando AFD...");
+            renameAFD = minimizer.renameState(minimizedAFD);
+            System.out.println("Renombrado completado");
+            System.out.println("AFD renombrado:");
+            showAutomata(renameAFD);
 
         } else if(AutomataTypeChecker.isAFD(automata)){
         
@@ -110,7 +121,13 @@ public class InterfaceUI {
             showAutomata(afd);
             minimizedAFD = minimizer.minimizer(afd);
             System.out.println("Minimización completado");
+            System.out.println("AFD minimizado:");
             showAutomata(minimizedAFD);
+            System.out.println("Renombrando AFD...");
+            renameAFD = minimizer.renameState(minimizedAFD);
+            System.out.println("Renombrado completado");
+            System.out.println("AFD renombrado:");
+            showAutomata(renameAFD);
         }
     }
 
@@ -120,7 +137,20 @@ public class InterfaceUI {
             System.out.println("Alfabeto: " + automata.getAlphabet());
             System.out.println("Estado inicial: " + automata.getInitialState());
             System.out.println("Estados finales: " + automata.getFinalStates());
-            System.out.println("Transiciones: " + automata.getTransitions());
+            System.out.println("===============================================================");
+            System.out.println("Transiciones:");
+            for (Map.Entry<String, Map<String, Set<String>>> entry : automata.getTransitions().entrySet()) {
+                String from = entry.getKey(); // estado origen
+
+                for (Map.Entry<String, Set<String>> inner : entry.getValue().entrySet()) {
+                    String symbol = inner.getKey(); // símbolo
+
+                    for (String to : inner.getValue()) {
+                        System.out.println(from + " --" + symbol + "--> " + to);
+                    }
+                }
+            }
+            System.out.println("===============================================================");
     }
 
     private void enterString() {
@@ -175,7 +205,7 @@ public class InterfaceUI {
         String path = fileName.concat(".pdf");
 
         try {
-            AutomataWriter.generatePDF(path, afnd, afd, minimizedAFD, testResults);
+            AutomataWriter.generatePDF(path, afnd, afd, minimizedAFD, renameAFD, testResults);
         } catch (Exception e) {
             System.out.println("Error al generar PDF: " + e.getMessage());
         }

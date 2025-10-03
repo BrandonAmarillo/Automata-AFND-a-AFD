@@ -112,7 +112,7 @@ public class Minimizer {
         return miniAFD;
     }
 
-    private AFD renameState(AFD afdMinimized) {
+    public AFD renameState(AFD afdMinimized) {
     Map<String, String> mappingAFD = new HashMap<>();
     int count = 0;
 
