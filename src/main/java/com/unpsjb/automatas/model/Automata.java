@@ -40,6 +40,10 @@ public abstract class Automata {
         return transitions.getOrDefault(state, new HashMap<>())
         .getOrDefault(symbol, new HashSet<>());
     }
+
+    public void setTransitions(Map<String, Map<String, Set<String>>> transitions) {
+        this.transitions = transitions;
+    }
     /**
      * Método para verificar si el estado es de aceptación
      * @param state
